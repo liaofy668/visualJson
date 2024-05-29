@@ -1,0 +1,144 @@
+@startuml
+class org.visualJson.RectViewFactory {
+- {static} ViewDirector viewDirector
++ View createView(String,String)
+}
+
+
+class org.visualJson.TreeViewFactory {
+- {static} ViewDirector viewDirector
++ View createView(String,String)
+}
+
+
+interface org.visualJson.ViewFactory {
++ View createView(String,String)
+}
+
+class org.visualJson.ViewDirector {
++ {static} Properties properties
++ void constructTreeView(ViewBuilder,String,String)
++ void constructRectView(RectViewBuilder,String,String)
+}
+
+
+class org.visualJson.Icon {
+- String shape
++ void draw()
+}
+
+
+class org.visualJson.ViewComponent {
+- String prefix
+- Icon icon
+- String attrname
++ void show()
+}
+
+
+abstract class org.visualJson.Main {
++ {static} void main(String[])
+}
+
+class org.visualJson.RectViewBuilder {
+- RectView view
+- {static} iconFactory iconFactory
++ void reset()
++ void setBranchIcon(String)
++ void setLeafIcon(String)
++ void loadJson(String)
++ RectView getResult()
+}
+
+
+interface org.visualJson.IconFactory {
++ Icon createIcon(String)
+}
+
+class org.visualJson.TreeViewBuilder {
+- TreeView treeView
+- {static} IconFactory iconFactory
++ void reset()
++ void setBranchIcon(String)
++ void setLeafIcon(String)
++ void loadJson(String)
++ TreeView getResult()
+}
+
+
+interface org.visualJson.ViewBuilder {
++ void reset()
++ void setBranchIcon(String)
++ void setLeafIcon(String)
++ void loadJson(String)
+}
+
+class org.visualJson.RectIconFactory {
++ Icon createIcon(String)
+}
+
+class org.visualJson.TreeIconFactory {
++ Icon createIcon(String)
+}
+
+class org.visualJson.RectView {
+- List<View> child
+- Icon branchIcon
+- Icon leafIcon
++ {static} String firstKey
++ {static} String lastKey
++ {static} Integer maxLen
++ void setBranchIcon(Icon)
++ void setLeafIcon(Icon)
++ void add(View)
++ void computer_len(LinkedTreeMap<String,Object>,Integer)
++ void load(LinkedTreeMap<String,Object>,String)
++ void show()
+}
+
+
+class org.visualJson.TreeView {
+- List<View> child
+- Icon branchIcon
+- Icon leafIcon
++ void setBranchIcon(Icon)
++ void setLeafIcon(Icon)
++ void add(View)
++ void load(LinkedTreeMap<String,Object>,String)
++ void show()
+}
+
+
+interface org.visualJson.View {
++ void show()
+}
+
+class org.visualJson.Client {
++ {static} void run(String[])
+}
+
+
+
+org.visualJson.ViewFactory <|.. org.visualJson.RectViewFactory
+org.visualJson.ViewFactory <|.. org.visualJson.TreeViewFactory
+org.visualJson.View <|.. org.visualJson.ViewComponent
+org.visualJson.ViewBuilder <|.. org.visualJson.RectViewBuilder
+org.visualJson.ViewBuilder <|.. org.visualJson.TreeViewBuilder
+org.visualJson.IconFactory <|.. org.visualJson.RectIconFactory
+org.visualJson.IconFactory <|.. org.visualJson.TreeIconFactory
+org.visualJson.View <|.. org.visualJson.RectView
+org.visualJson.View <|.. org.visualJson.TreeView
+org.visualJson.Main *-- org.visualJson.ViewFactory
+TreeIconFactory *-- Icon
+RectIconFactory *-- Icon
+org.visualJson.TreeViewFactory *-- org.visualJson.ViewDirector
+org.visualJson.RectViewFactory *-- org.visualJson.ViewDirector
+org.visualJson.ViewDirector *-- org.visualJson.ViewBuilder
+org.visualJson.RectViewBuilder *-- org.visualJson.IconFactory
+org.visualJson.TreeViewBuilder *-- org.visualJson.IconFactory
+org.visualJson.RectViewBuilder *-- org.visualJson.View
+org.visualJson.TreeViewBuilder *-- org.visualJson.View
+org.visualJson.RectView *-- org.visualJson.View
+org.visualJson.TreeView *-- org.visualJson.View
+
+@enduml
